@@ -1,28 +1,161 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="container">
+      <div class="todoList">
+        <h1>TODO LIST:</h1>
+
+        <AddTodo
+                v-on:addTask="addTodo"
+        />
+
+        <select v-model="sort" class="todoList__select">
+          <option value="all">All</option>
+          <option value="completed">Completed</option>
+          <option value="notCompleted">Not Completed</option>
+        </select>
+
+        <hr/>
+
+        <TodoList
+                v-if="sortedTodos.length"
+                v-bind:tasks="sortedTodos"
+                v-on:checkTaskInList="checkTask"
+                v-on:removeTaskFromList="removeTodo"
+        />
+        <p v-else>NO TASKS</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+  import AddTodo from '@/components/AddTodo'
+  import TodoList from '@/components/TodoList'
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+
+  export default {
+    name: 'App',
+
+    data() {
+      return {
+        todosData: [],
+        sort: 'all'
+      }
+    },
+
+    mounted() {
+      if (localStorage.todos) {
+        this.todosData = JSON.parse(localStorage.todos)
+      } else {
+        fetch('https://jsonplaceholder.typicode.com/todos?_limit=3')
+          .then(response => response.json())
+          .then(data => {
+            localStorage.setItem('todos', JSON.stringify(data))
+            return this.todosData = data
+          })
+      }
+    },
+
+    components: {
+      AddTodo,
+      TodoList
+    },
+
+    computed: { // переменные
+      sortedTodos() {
+        if (this.sort === 'all') {
+          return this.todosData
+        }
+
+        if (this.sort === 'completed') {
+          return this.todosData.filter(todo => todo.completed)
+        }
+
+        if (this.sort === 'notCompleted') {
+          return this.todosData.filter(todo => !todo.completed)
+        }
+      }
+    },
+
+    methods: {
+      addTodo(todo) {
+        this.todosData.push(todo)
+        this.setTodoInStorage()
+      },
+      removeTodo(id) {
+        this.todosData = this.todosData.filter(todo => todo.id !== id)
+        this.setTodoInStorage()
+      },
+      checkTask(id) {
+        // console.log(id)
+        this.todosData.forEach(todo => {
+          if (todo.id === id) {
+            todo.completed = !todo.completed
+            this.setTodoInStorage()
+          }
+        })
+      },
+      setTodoInStorage() {
+        localStorage.setItem('todos', JSON.stringify(this.todosData))
+      }
+    }
   }
-}
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  hr {
+    border: none;
+    height: 2px;
+    width: 90%;
+    background-color: #002494;
+    margin: 10px auto 20px;
+  }
+
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .todoList {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    min-height: 500px;
+    max-width: 100%;
+    margin: 50px auto;
+    padding: 10px 0 50px;
+    background: #f1f1f1;
+    border-radius: 20px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+  }
+
+  .todoList:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
+  }
+
+  .todoList__select {
+    width: 100%;
+    max-width: 100px;
+    margin: 20px auto;
+  }
+
 </style>
