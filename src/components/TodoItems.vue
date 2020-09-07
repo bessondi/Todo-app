@@ -2,12 +2,13 @@
   <li>
     <input
             type="checkbox"
-            v-on:change="taskItem.completed = !taskItem.completed"
-            v-on:click="$emit('checkAsDone', taskItem.id)"
+            :checked="taskItem.completed"
+            v-on:change="$emit('checkAsDone', taskItem.id)"
     >
     <p class="task"
        v-bind:class='{ done: taskItem.completed }'>
-      {{ index }} - {{ taskItem.title | uppercase }}
+<!--      {{ index }} - -->
+      {{ taskItem.title | uppercase }}
     </p>
     <button
             class="btn"

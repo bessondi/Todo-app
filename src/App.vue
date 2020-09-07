@@ -87,16 +87,17 @@
         this.setTodoInStorage()
       },
       checkTask(id) {
-        // console.log(id)
+        // console.log(localStorage.getItem('todos'))
         this.todosData.forEach(todo => {
           if (todo.id === id) {
             todo.completed = !todo.completed
-            this.setTodoInStorage()
           }
         })
+        this.setTodoInStorage()
       },
       setTodoInStorage() {
         localStorage.setItem('todos', JSON.stringify(this.todosData))
+        console.log(localStorage.getItem('todos'))
       }
     }
   }
