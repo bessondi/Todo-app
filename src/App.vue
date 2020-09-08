@@ -5,6 +5,7 @@
         <h1>TODO LIST:</h1>
 
         <AddTodo
+          v-bind:id="getTodoId"
           v-on:addTask="addTodo"
         />
 
@@ -19,8 +20,8 @@
         <TodoList
           v-if="sortedTodos.length"
           v-bind:tasks="sortedTodos"
-          v-on:markListTask="markAsDone"
           v-on:editTaskFromList="editTodo"
+          v-on:markListTask="markAsDone"
           v-on:removeTaskFromList="removeTodo"
         />
         <p v-else>NO TASKS</p>
@@ -33,6 +34,7 @@
   import AddTodo from '@/components/AddTodo'
   import TodoList from '@/components/TodoList'
 
+  const url = 'https://jsonplaceholder.typicode.com/todos'
 
   export default {
     name: 'App',
@@ -48,12 +50,13 @@
       if (localStorage.todos) {
         this.todosData = JSON.parse(localStorage.todos)
       } else {
-        fetch('https://jsonplaceholder.typicode.com/todos?_limit=3')
+        fetch(`${url}?_limit=3`)
           .then(response => response.json())
           .then(data => {
             localStorage.setItem('todos', JSON.stringify(data))
             return this.todosData = data
-          })
+          }
+        )
       }
     },
 
@@ -63,6 +66,9 @@
     },
 
     computed: { // переменные
+      getTodoId() {
+        return this.todosData.length + 1
+      },
       sortedTodos() {
         if (this.sort === 'all') {
           return this.todosData
@@ -79,28 +85,79 @@
     },
 
     methods: {
-      addTodo(todo) {
-        this.todosData.push(todo)
+      addTodo(newTodo) {
+        this.todosData.push(newTodo)
         this.setTodoInStorage()
+        this.addTodoToServer(newTodo)
       },
       editTodo(todo, newTodoTitle) {
-        todo.title = newTodoTitle
+        if (todo.title !== newTodoTitle) {
+          todo.title = newTodoTitle
+          this.setTodoInStorage()
+          this.editTodoFromServer(todo)
+        }
+      },
+      markAsDone(id) {
+        let completedTodo
+        this.todosData.forEach(todo => {
+          if (todo.id === id) {
+            todo.completed = !todo.completed
+            completedTodo = todo
+          }
+        })
         this.setTodoInStorage()
+        this.markTodoAsDoneOnServer(completedTodo)
       },
       removeTodo(id) {
         this.todosData = this.todosData.filter(todo => todo.id !== id)
         this.setTodoInStorage()
-      },
-      markAsDone(id) {
-        this.todosData.forEach(todo => {
-          if (todo.id === id) {
-            todo.completed = !todo.completed
-          }
-        })
-        this.setTodoInStorage()
+        this.removeTodoFromServer(id)
       },
       setTodoInStorage() {
         localStorage.setItem('todos', JSON.stringify(this.todosData))
+      },
+
+      addTodoToServer(newTodo) {
+        fetch( url, {
+          method: 'POST',
+          body: JSON.stringify(newTodo),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        })
+          .then(response => response.json())
+          .then(json => console.log(json))
+      },
+      markTodoAsDoneOnServer(completedTodo) {
+        fetch(`${url}/${completedTodo.id}`, {
+          method: 'PATCH',
+          body: JSON.stringify({
+            completed: completedTodo.completed
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        })
+          .then(response => response.json())
+          .then(json => console.log(json))
+      },
+      editTodoFromServer(editedTodo) {
+        fetch(`${url}/${editedTodo.id}`, {
+          method: 'PATCH',
+          body: JSON.stringify({
+            title: editedTodo.title
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        })
+          .then(response => response.json())
+          .then(json => console.log(json))
+      },
+      removeTodoFromServer(deletedTodoId) {
+        fetch(`${url}/${deletedTodoId}`, {
+          method: 'DELETE',
+        })
       }
     }
   }

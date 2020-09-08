@@ -1,12 +1,11 @@
 <template>
   <ul>
     <TodoItems
-      v-for="(item, i) of tasks"
-      v-bind:index="i + 1"
+      v-for="(item) of tasks"
       v-bind:taskItem="item"
       v-bind:title="item.title"
-      v-on:checkAsDone="checkAsDone"
       v-on:editTodo="editTodo(item, $event)"
+      v-on:checkAsDone="checkAsDone"
       v-on:removeTask="removeTask"
     />
   </ul>

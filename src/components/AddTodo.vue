@@ -16,12 +16,16 @@
       }
     },
 
+    props: {
+      id: Number
+    },
+
     methods: {
       newTask() {
         if (this.title.trim()) {
 
           const newTask = {
-            id: Date.now(),
+            id: this.id,
             title: this.title,
             completed: false
           }

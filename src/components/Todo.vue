@@ -15,7 +15,7 @@
         {{ taskItem.title | uppercase }}
     </span>
 
-    <form v-else @submit.prevent="finishEditing()">
+    <form v-else v-on:submit.prevent="finishEditing()">
       <input
         type="text"
         v-model="newTodoTitle"
@@ -54,6 +54,7 @@
         if (this.isEditing) {
           this.finishEditing();
         } else {
+
           this.newTodoTitle = this.taskItem.title;
           this.isEditing = true;
           // возвращает td к обычному состоянию
