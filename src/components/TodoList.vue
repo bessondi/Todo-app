@@ -42,8 +42,13 @@
     display: flex;
     flex-direction: column;
     list-style: none;
-    width: 350px;
+    max-width: 400px;
+    width: 100%;
     padding: 0;
-    margin: 0 auto;
+    margin: 32px auto 40px;
+
+    @media screen and (max-width: 768px) {
+      margin: 32px auto;
+    }
   }
 </style>

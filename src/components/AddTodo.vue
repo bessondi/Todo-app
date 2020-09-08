@@ -1,17 +1,16 @@
 <template>
   <form
-    class="newTaskField"
+    class="newTaskForm"
     v-on:submit.prevent="newTask"
   >
-<!--    <label for="newTask">Task:</label>-->
     <input
       id="newTask"
-      class="newTaskField__titleField"
+      class="newTaskForm__title"
       type="text"
-      placeholder="Add a new to-do..."
+      placeholder="Add a new todo.."
       v-model="title"
     >
-    <button type="submit">Add</button>
+<!--    <button type="submit" class="newTaskForm__addTodoBtn">+</button>-->
   </form>
 </template>
 
@@ -48,12 +47,49 @@
 
 
 <style lang="scss" scoped>
-  .newTaskField {
-    &__titleField {
-      width: 300px;
-      padding: 4px 8px;
-      margin: 20px 0 0 0;
+  $accentRedColor: #E63946;
+  $accentLightBlueColor: #A8DADC;
+  $checkboxHover: #d0d0d0;
+
+
+  .newTaskForm {
+
+    &__title {
+      max-width: 400px;
+      width: 100%;
+      padding: 8px 0;
+      margin: 40px 0 0;
+      font-size: 1.4rem;
       outline: none;
+      border: none;
+      border-bottom: 1px solid $accentLightBlueColor;
+      cursor: pointer;
+      transition: border 0.3s;
+
+      &:focus {
+        border-bottom: 2px solid $accentRedColor;
+        transition: border-bottom 0.3s;
+      }
+
+      &::placeholder {
+        color: $accentLightBlueColor;
+      }
+
+      @media screen and (max-width: 768px) {
+        width: 80%;
+      }
+    }
+
+    &__addTodoBtn {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      color: #f1f1f1;
+      background-color: $accentRedColor;
+      cursor: pointer;
+      transition: 0.3s;
     }
   }
 </style>

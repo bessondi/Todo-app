@@ -2,10 +2,17 @@
   <div id="app">
     <div class="container">
       <div class="todoList">
-        <div class="todoList__header">
-          <h1>
-            <span>{{todosData.length ? todosData.length : null}}</span>
-             todo{{todosData.length > 1 ? 's' : null}}
+        <div class="header">
+          <h1 class="title">
+            <span class="counter">
+              {{incompleteTodosCounter.length > 0
+              ? incompleteTodosCounter.length
+              : null}}
+            </span> todo{{incompleteTodosCounter.length > 1
+            ? 's left'
+            : !incompleteTodosCounter.length
+            ? ' app'
+            : ' left'}}
           </h1>
 
           <Date/>
@@ -15,15 +22,14 @@
             v-on:addTask="addTodo"
           />
 
-          <select v-model="sort" class="todoList__select">
+          <select v-model="sort" class="filter">
             <option value="all">All todos</option>
             <option value="completed">Completed</option>
-            <option value="notCompleted">Not Completed</option>
+            <option value="incomplete">Not Completed</option>
           </select>
 
           <hr/>
         </div>
-
 
         <TodoList
           v-if="sortedTodos.length"
@@ -32,7 +38,8 @@
           v-on:markListTask="markAsDone"
           v-on:removeTaskFromList="removeTodo"
         />
-        <p v-else>NO TASKS</p>
+
+        <p v-else class="emptyList"><strong>NO TASKS</strong></p>
       </div>
     </div>
   </div>
@@ -51,8 +58,7 @@
     data() {
       return {
         todosData: [],
-        sort: 'all',
-        // todoCounter: this.todosData.length || 0
+        sort: 'all'
       }
     },
 
@@ -63,10 +69,10 @@
         fetch(`${url}?_limit=3`)
           .then(response => response.json())
           .then(data => {
-            localStorage.setItem('todos', JSON.stringify(data))
-            return this.todosData = data
-          }
-        )
+              localStorage.setItem('todos', JSON.stringify(data))
+              return this.todosData = data
+            }
+          )
       }
     },
 
@@ -89,13 +95,15 @@
           return this.todosData.filter(todo => todo.completed)
         }
 
-        if (this.sort === 'notCompleted') {
+        if (this.sort === 'incomplete') {
           return this.todosData.filter(todo => !todo.completed)
         }
       },
-      // notComletedTodosCounter() {
-      //   return this.todosData.filter(todo => !todo.completed)
-      // }
+      incompleteTodosCounter() {
+        if (this.todosData) {
+          return this.todosData.filter(todo => !todo.completed)
+        }
+      }
     },
 
     methods: {
@@ -132,7 +140,7 @@
       },
 
       addTodoToServer(newTodo) {
-        fetch( url, {
+        fetch(url, {
           method: 'POST',
           body: JSON.stringify(newTodo),
           headers: {
@@ -180,65 +188,78 @@
 </script>
 
 <style lang="scss">
+  $accentBlueColor: #457B9D;
+  $accentLightBlueColor: #A8DADC;
+  $textColor: #353535;
+
   body {
     padding: 0;
     margin: 0;
+    color: $textColor;
+
+    hr {
+      border: none;
+      height: 3px;
+      width: 100%;
+      background-color: $accentLightBlueColor;
+      margin: 0;
+    }
+
+    #app {
+      font-family: Avenir, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+
+        .todoList {
+          display: flex;
+          flex-direction: column;
+          max-width: 600px;
+          min-height: 500px;
+          width: 100%;
+          margin: 60px auto;
+          border-radius: 20px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+          transition: 0.3s;
+
+          &:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: 0.3s;
+          }
+
+          .header {
+            .title {
+              .counter {
+                color: $accentBlueColor;
+              }
+            }
+          }
+
+          .filter {
+            outline: none;
+            border: none;
+            max-width: 125px;
+            margin: 20px auto;
+          }
+
+          .emptyList {
+            color: $accentLightBlueColor;
+          }
+
+          @media screen and (max-width: 768px) {
+            margin: 30px 20px;
+          }
+        }
+      }
+    }
   }
-
-  hr {
-    border: none;
-    height: 2px;
-    width: 90%;
-    background-color: #002494;
-    margin: 10px auto 20px;
-  }
-
-  #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-  }
-
-  .container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  }
-
-  .todoList {
-    display: flex;
-    flex-direction: column;
-    width: 600px;
-    min-height: 500px;
-    max-width: 100%;
-    margin: 50px auto;
-    padding: 10px 0 50px;
-    background: #f1f1f1;
-    border-radius: 20px;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-    transition: 0.3s;
-  }
-
-  .todoList:hover {
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
-    transition: 0.3s;
-  }
-
-  .todoList__select {
-    width: 100%;
-    max-width: 100px;
-    margin: 20px auto;
-
-    /*list-style: none;*/
-    /*display: flex;*/
-    /*flex-direction: row;*/
-    /*justify-content: space-between;*/
-    /*max-width: 300px;*/
-    /*padding: 0;*/
-  }
-
 </style>

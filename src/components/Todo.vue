@@ -81,51 +81,120 @@
 
 
 <style lang="scss" scoped>
+  $accentRedColor: #E63946;
+  $accentBlueColor: #457B9D;
+  $accentDeepBlueColor: #1D3557;
+  $todoBodyColor: #ffffff;
+  $textColor: #353535;
+  $doneTextColor: #c1c1c1;
+  $checkboxColor: #ffffff;
+  $checkboxChecked: #808080;
+  $checkboxHover: #d0d0d0;
+
+
   .todo {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 30px 1fr 30px;
+    grid-template-rows: 40px;
     align-items: center;
+    justify-items: center;
+    grid-template-areas: "checkbox title remove";
+    position: relative;
     padding: 16px;
     margin: 8px 0;
-    background: #002494;
-    color: white;
     border-radius: 10px;
+    background: $todoBodyColor;
+    border: 2px solid $accentBlueColor;
+    color: $textColor;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+    transition: 0.5s;
+
+    &:hover {
+      border: 2px solid $accentDeepBlueColor;
+      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+      transition: 0.5s;
+    }
 
     &__checkbox {
-      &:hover{
-        cursor: pointer;
+      grid-area: checkbox;
+      width: 30px;
+      height: 30px;
+      background-color: $checkboxColor;
+      border-radius: 50%;
+      margin: 0;
+      border: 2px solid $checkboxChecked;
+      outline: none;
+      cursor: pointer;
+      -webkit-appearance: none;
+      transition: 0.3s;
+
+      &:hover {
+        background-color: $checkboxHover;
+        border: 2px solid $checkboxChecked;
+        transition: 0.3s;
+      }
+
+      &:checked {
+        background-color: $checkboxHover;
+        border: 2px solid $checkboxChecked;
+        transition: 0.3s;
       }
     }
 
     &__title {
-      width: 100%;
-      margin: 0;
-      padding: 8px 0;
-      margin: 0 16px;
+      grid-area: title;
+      max-width: 270px;
+      padding: 8px 12px;
       text-align: left;
-
-      &:hover{
-        cursor: pointer;
-      }
+      justify-self: flex-start;
+      cursor: pointer;
+      font-weight: bold;
     }
 
     &__editField {
+      margin: 0 auto;
+      width: 100%;
     }
+
     &__textArea {
+      width: 270px;
+      padding: 8px;
+      font-size: 1.2rem;
+      outline: none;
+      border: none;
+      transition: 0.3s;
     }
 
     &__removeTodoBtn {
+      grid-area: remove;
+      position: absolute;
       width: 30px;
-      height: 25px;
+      height: 30px;
       border-radius: 50%;
       border: none;
       outline: none;
-      background-color: #fff;
+      color: #f1f1f1;
+      background-color: $accentRedColor;
+      cursor: pointer;
+      transition: 0.3s;
+
+      &:hover {
+        width: 62px;
+        height: 72px;
+        border-radius: 0 8px 8px 0;
+        font-size: 2rem;
+        transition: 0.3s;
+      }
     }
 
     .done {
       text-decoration: line-through;
-      color: #c1c1c1;
+      color: $doneTextColor;
+      transition: 0.3s;
+    }
+
+    @media screen and (max-width: 768px) {
+      margin: 8px 20px;
     }
   }
 </style>
