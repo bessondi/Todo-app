@@ -1,8 +1,14 @@
 <template>
-  <form v-on:submit.prevent="newTask">
-    <label for="task">Task:</label>
+  <form class="newTaskField" v-on:submit.prevent="newTask">
+    <label for="newTask">Task:</label>
     <br>
-    <input id="task" class="taskInput" type="text" v-model="title">
+    <input
+      id="newTask"
+      class="newTaskField__titleField"
+      type="text"
+      placeholder="Add a new to-do..."
+      v-model="title"
+    >
     <button type="submit">Add</button>
   </form>
 </template>
@@ -39,10 +45,12 @@
 </script>
 
 
-<style scoped>
-  .taskInput {
-    width: 300px;
-    padding: 4px 8px;
-    outline: none;
+<style lang="scss" scoped>
+  .newTaskField {
+    &__titleField {
+      width: 300px;
+      padding: 4px 8px;
+      outline: none;
+    }
   }
 </style>

@@ -2,20 +2,23 @@
   <div id="app">
     <div class="container">
       <div class="todoList">
-        <h1>TODO LIST:</h1>
+        <div class="todoList__header">
+          <h1>TODO LIST:</h1>
 
-        <AddTodo
-          v-bind:id="getTodoId"
-          v-on:addTask="addTodo"
-        />
+          <AddTodo
+            v-bind:id="getTodoId"
+            v-on:addTask="addTodo"
+          />
 
-        <select v-model="sort" class="todoList__select">
-          <option value="all">All</option>
-          <option value="completed">Completed</option>
-          <option value="notCompleted">Not Completed</option>
-        </select>
+          <select v-model="sort" class="todoList__select">
+            <option value="all">All todos</option>
+            <option value="completed">Completed</option>
+            <option value="notCompleted">Not Completed</option>
+          </select>
 
-        <hr/>
+          <hr/>
+        </div>
+
 
         <TodoList
           v-if="sortedTodos.length"
@@ -158,13 +161,14 @@
         fetch(`${url}/${deletedTodoId}`, {
           method: 'DELETE',
         })
+          .then(response => response.ok ?
+            console.log('Todo was removed from server') : console.log(response.statusText))
       }
     }
   }
 </script>
 
-<style>
-
+<style lang="scss">
   body {
     padding: 0;
     margin: 0;
@@ -217,6 +221,13 @@
     width: 100%;
     max-width: 100px;
     margin: 20px auto;
+
+    /*list-style: none;*/
+    /*display: flex;*/
+    /*flex-direction: row;*/
+    /*justify-content: space-between;*/
+    /*max-width: 300px;*/
+    /*padding: 0;*/
   }
 
 </style>

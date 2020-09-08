@@ -1,5 +1,5 @@
 <template>
-  <ul>
+  <ul class="todoList__items">
     <TodoItems
       v-for="(item) of tasks"
       v-bind:taskItem="item"
@@ -37,8 +37,8 @@
 </script>
 
 
-<style scoped>
-  ul {
+<style lang="scss" scoped>
+  .todoList__items {
     display: flex;
     flex-direction: column;
     list-style: none;

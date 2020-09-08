@@ -1,13 +1,14 @@
 <template>
-  <li>
+  <li class="todo">
     <input
+      class="todo__checkbox"
       type="checkbox"
       v-bind:checked="taskItem.completed"
       v-on:change="$emit('checkAsDone', taskItem.id)"
     >
 
     <span
-      class="task"
+      class="todo__title"
       v-bind:class='{ done: taskItem.completed }'
       v-on:click="startEditing()"
       v-if="!isEditing"
@@ -15,8 +16,12 @@
         {{ taskItem.title | uppercase }}
     </span>
 
-    <form v-else v-on:submit.prevent="finishEditing()">
+    <form
+      class="todo__editField"
+      v-else v-on:submit.prevent="finishEditing()"
+    >
       <input
+        class="todo__textArea"
         type="text"
         v-model="newTodoTitle"
         v-on:blur="finishEditing()"
@@ -25,7 +30,7 @@
     </form>
 
     <button
-      class="btn"
+      class="todo__removeTodoBtn"
       v-on:click="$emit('removeTask', taskItem.id)"
     >&times;
     </button>
@@ -75,36 +80,52 @@
 </script>
 
 
-<style scoped>
-  li {
+<style lang="scss" scoped>
+  .todo {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 15px;
+    padding: 16px;
     margin: 8px 0;
     background: #002494;
     color: white;
     border-radius: 10px;
-  }
 
-  .task {
-    width: 100%;
-    margin: 0;
-    padding: 5px 20px;
-    text-align: left;
-  }
+    &__checkbox {
+      &:hover{
+        cursor: pointer;
+      }
+    }
 
-  .btn {
-    width: 30px;
-    height: 25px;
-    border-radius: 50%;
-    border: none;
-    outline: none;
-    background-color: #fff;
-  }
+    &__title {
+      width: 100%;
+      margin: 0;
+      padding: 8px 0;
+      margin: 0 16px;
+      text-align: left;
 
-  .done {
-    text-decoration: line-through;
-    color: #c1c1c1;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+
+    &__editField {
+    }
+    &__textArea {
+    }
+
+    &__removeTodoBtn {
+      width: 30px;
+      height: 25px;
+      border-radius: 50%;
+      border: none;
+      outline: none;
+      background-color: #fff;
+    }
+
+    .done {
+      text-decoration: line-through;
+      color: #c1c1c1;
+    }
   }
 </style>
