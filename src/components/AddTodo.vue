@@ -1,7 +1,9 @@
 <template>
-  <form class="newTaskField" v-on:submit.prevent="newTask">
-    <label for="newTask">Task:</label>
-    <br>
+  <form
+    class="newTaskField"
+    v-on:submit.prevent="newTask"
+  >
+<!--    <label for="newTask">Task:</label>-->
     <input
       id="newTask"
       class="newTaskField__titleField"
@@ -50,6 +52,7 @@
     &__titleField {
       width: 300px;
       padding: 4px 8px;
+      margin: 20px 0 0 0;
       outline: none;
     }
   }

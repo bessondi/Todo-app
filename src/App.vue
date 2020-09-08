@@ -3,7 +3,12 @@
     <div class="container">
       <div class="todoList">
         <div class="todoList__header">
-          <h1>TODO LIST:</h1>
+          <h1>
+            <span>{{todosData.length ? todosData.length : null}}</span>
+             todo{{todosData.length > 1 ? 's' : null}}
+          </h1>
+
+          <Date/>
 
           <AddTodo
             v-bind:id="getTodoId"
@@ -34,6 +39,7 @@
 </template>
 
 <script>
+  import Date from '@/components/Date'
   import AddTodo from '@/components/AddTodo'
   import TodoList from '@/components/TodoList'
 
@@ -45,7 +51,8 @@
     data() {
       return {
         todosData: [],
-        sort: 'all'
+        sort: 'all',
+        // todoCounter: this.todosData.length || 0
       }
     },
 
@@ -64,6 +71,7 @@
     },
 
     components: {
+      Date,
       AddTodo,
       TodoList
     },
@@ -84,7 +92,10 @@
         if (this.sort === 'notCompleted') {
           return this.todosData.filter(todo => !todo.completed)
         }
-      }
+      },
+      // notComletedTodosCounter() {
+      //   return this.todosData.filter(todo => !todo.completed)
+      // }
     },
 
     methods: {
