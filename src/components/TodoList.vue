@@ -1,32 +1,37 @@
 <template>
   <ul>
     <TodoItems
-            v-for="(item, i) of tasks"
-            v-bind:index="i + 1"
-            v-bind:taskItem="item"
-            v-on:checkAsDone="checkAsDone"
-            v-on:removeTask="removeTask"
+      v-for="(item, i) of tasks"
+      v-bind:index="i + 1"
+      v-bind:taskItem="item"
+      v-bind:title="item.title"
+      v-on:checkAsDone="checkAsDone"
+      v-on:editTodo="editTodo(item, $event)"
+      v-on:removeTask="removeTask"
     />
   </ul>
 </template>
 
 
 <script>
-  import TodoItems from '@/components/TodoItems'
+  import Todo from '@/components/Todo'
 
   export default {
     props: ['tasks'],
 
     components: {
-      TodoItems
+      TodoItems: Todo
     },
 
     methods: {
       checkAsDone(id) {
-        this.$emit('checkTaskInList', id)
+        this.$emit('markListTask', id)
       },
       removeTask(id) {
         this.$emit('removeTaskFromList', id)
+      },
+      editTodo(item, $event) {
+        this.$emit('editTaskFromList', item, $event)
       }
     }
   }

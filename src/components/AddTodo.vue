@@ -1,7 +1,9 @@
 <template>
   <form v-on:submit.prevent="newTask">
-    <input class="taskInput" type="text" v-model="title">
-    <button type="submit">ADD</button>
+    <label for="task">Task:</label>
+    <br>
+    <input id="task" class="taskInput" type="text" v-model="title">
+    <button type="submit">Add</button>
   </form>
 </template>
 

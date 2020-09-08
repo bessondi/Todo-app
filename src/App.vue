@@ -5,7 +5,7 @@
         <h1>TODO LIST:</h1>
 
         <AddTodo
-                v-on:addTask="addTodo"
+          v-on:addTask="addTodo"
         />
 
         <select v-model="sort" class="todoList__select">
@@ -17,10 +17,11 @@
         <hr/>
 
         <TodoList
-                v-if="sortedTodos.length"
-                v-bind:tasks="sortedTodos"
-                v-on:checkTaskInList="checkTask"
-                v-on:removeTaskFromList="removeTodo"
+          v-if="sortedTodos.length"
+          v-bind:tasks="sortedTodos"
+          v-on:markListTask="markAsDone"
+          v-on:editTaskFromList="editTodo"
+          v-on:removeTaskFromList="removeTodo"
         />
         <p v-else>NO TASKS</p>
       </div>
@@ -82,12 +83,15 @@
         this.todosData.push(todo)
         this.setTodoInStorage()
       },
+      editTodo(todo, newTodoTitle) {
+        todo.title = newTodoTitle
+        this.setTodoInStorage()
+      },
       removeTodo(id) {
         this.todosData = this.todosData.filter(todo => todo.id !== id)
         this.setTodoInStorage()
       },
-      checkTask(id) {
-        // console.log(localStorage.getItem('todos'))
+      markAsDone(id) {
         this.todosData.forEach(todo => {
           if (todo.id === id) {
             todo.completed = !todo.completed
@@ -97,7 +101,6 @@
       },
       setTodoInStorage() {
         localStorage.setItem('todos', JSON.stringify(this.todosData))
-        console.log(localStorage.getItem('todos'))
       }
     }
   }
