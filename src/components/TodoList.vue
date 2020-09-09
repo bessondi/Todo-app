@@ -23,14 +23,14 @@
     },
 
     methods: {
-      checkAsDone(id) {
-        this.$emit('markListTask', id)
+      checkAsDone(id, event) {
+        this.$emit('markListTask', id, event)
       },
       removeTask(id) {
         this.$emit('removeTaskFromList', id)
       },
-      editTodo(item, $event) {
-        this.$emit('editTaskFromList', item, $event)
+      editTodo(item, event) {
+        this.$emit('editTaskFromList', item, event)
       }
     }
   }
@@ -38,6 +38,9 @@
 
 
 <style lang="scss" scoped>
+  @import '../scss/colors';
+
+
   .todoList__items {
     display: flex;
     flex-direction: column;

@@ -10,7 +10,7 @@
       placeholder="Add a new todo.."
       v-model="title"
     >
-<!--    <button type="submit" class="newTaskForm__addTodoBtn">+</button>-->
+    <!--    <button type="submit" class="newTaskForm__addTodoBtn">+</button>-->
   </form>
 </template>
 
@@ -47,9 +47,7 @@
 
 
 <style lang="scss" scoped>
-  $accentRedColor: #E63946;
-  $accentLightBlueColor: #A8DADC;
-  $checkboxHover: #d0d0d0;
+  @import '../scss/colors';
 
 
   .newTaskForm {
@@ -65,6 +63,7 @@
       border-bottom: 1px solid $accentLightBlueColor;
       cursor: pointer;
       transition: border 0.3s;
+      border-radius: 0;
 
       &:focus {
         border-bottom: 2px solid $accentRedColor;
@@ -76,14 +75,15 @@
       }
 
       @media screen and (max-width: 768px) {
-        width: 80%;
+        max-width: 360px;
+        width: 85%;
       }
     }
 
     &__addTodoBtn {
       width: 50px;
       height: 50px;
-      border-radius: 10px;
+      /*border-radius: 10px;*/
       border: none;
       outline: none;
       color: #f1f1f1;

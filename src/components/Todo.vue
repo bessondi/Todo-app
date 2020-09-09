@@ -1,10 +1,12 @@
 <template>
-  <li class="todo">
+  <li class="todo"
+      v-bind:class='{ done: taskItem.completed }'
+  >
     <input
       class="todo__checkbox"
       type="checkbox"
       v-bind:checked="taskItem.completed"
-      v-on:change="$emit('checkAsDone', taskItem.id)"
+      v-on:change="$emit('checkAsDone', taskItem.id, $event)"
     >
 
     <span
@@ -57,23 +59,24 @@
     methods: {
       startEditing() {
         if (this.isEditing) {
-          this.finishEditing();
+          this.finishEditing()
         } else {
 
-          this.newTodoTitle = this.taskItem.title;
-          this.isEditing = true;
+          this.newTodoTitle = this.taskItem.title
+          this.isEditing = true
           // возвращает td к обычному состоянию
-          this.$nextTick(() => this.$refs.newTodo.focus());
+          this.$nextTick(() => this.$refs.newTodo.focus())
         }
       },
       finishEditing() {
         this.isEditing = false;
-        this.$emit("editTodo", this.newTodoTitle);
+        this.$emit("editTodo", this.newTodoTitle)
       }
     },
     filters: {
       uppercase(value) {
-        return value.toUpperCase()
+        // return value.toUpperCase()
+        return value.charAt(0).toUpperCase() + value.slice(1)
       }
     }
   }
@@ -81,21 +84,14 @@
 
 
 <style lang="scss" scoped>
-  $accentRedColor: #E63946;
-  $accentBlueColor: #457B9D;
-  $accentDeepBlueColor: #1D3557;
-  $todoBodyColor: #ffffff;
-  $textColor: #353535;
-  $doneTextColor: #c1c1c1;
-  $checkboxColor: #ffffff;
-  $checkboxChecked: #808080;
-  $checkboxHover: #d0d0d0;
+  @import '../scss/colors';
 
 
   .todo {
     display: grid;
-    grid-template-columns: 30px 1fr 30px;
-    grid-template-rows: 40px;
+    grid-template-columns: 30px minmax(50px, 1fr) 30px;
+    /*grid-template-rows: 40px;*/
+    grid-template-rows: minmax(40px, auto);
     align-items: center;
     justify-items: center;
     grid-template-areas: "checkbox title remove";
@@ -111,7 +107,7 @@
 
     &:hover {
       border: 2px solid $accentDeepBlueColor;
-      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
       transition: 0.5s;
     }
 
@@ -135,9 +131,14 @@
       }
 
       &:checked {
-        background-color: $checkboxHover;
-        border: 2px solid $checkboxChecked;
+        background-color: $accentLightBlueColor;
+        border: 2px solid $checkboxHover;
         transition: 0.3s;
+
+        &:hover {
+          background-color: $doneTextColor;
+          transition: 0.3s;
+        }
       }
     }
 
@@ -149,20 +150,32 @@
       justify-self: flex-start;
       cursor: pointer;
       font-weight: bold;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-word;
+      hyphens: auto;
+      -ms-hyphens: auto;
+      -moz-hyphens: auto;
+      -webkit-hyphens: auto;
     }
 
     &__editField {
       margin: 0 auto;
-      width: 100%;
+      max-width: 270px;
+      width: 90%;
     }
 
     &__textArea {
-      width: 270px;
+      max-width: 270px;
+      width: 100%;
+      height: 100%;
       padding: 8px;
       font-size: 1.2rem;
       outline: none;
       border: none;
       transition: 0.3s;
+      font-family: 'Avenir', sans-serif;
+      font-weight: bold;
     }
 
     &__removeTodoBtn {
@@ -176,14 +189,15 @@
       color: #f1f1f1;
       background-color: $accentRedColor;
       cursor: pointer;
-      transition: 0.3s;
+      transition: 0.2s;
 
       &:hover {
-        width: 62px;
-        height: 72px;
-        border-radius: 0 8px 8px 0;
-        font-size: 2rem;
-        transition: 0.3s;
+        /*width: 62px;*/
+        /*height: 72px;*/
+        /*border-radius: 0 8px 8px 0;*/
+        border-radius: 5px;
+        font-size: 1.5rem;
+        transition: 0.2s;
       }
     }
 
@@ -191,6 +205,10 @@
       text-decoration: line-through;
       color: $doneTextColor;
       transition: 0.3s;
+    }
+
+    &.done {
+      border-color: $accentLightBlueColor;
     }
 
     @media screen and (max-width: 768px) {

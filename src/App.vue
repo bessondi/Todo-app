@@ -119,7 +119,8 @@
           this.editTodoFromServer(todo)
         }
       },
-      markAsDone(id) {
+
+      markAsDone(id, todoItem) {
         let completedTodo
         this.todosData.forEach(todo => {
           if (todo.id === id) {
@@ -127,9 +128,30 @@
             completedTodo = todo
           }
         })
+
+        // this.todosData.sort((a, b) => {
+        //   if (a.completed !== b.completed) {
+        //     return a.completed ? 1 : -1
+        //   } else {
+        //     return a.id > b.id ? 1 : -1;
+        //   }
+        // })
+        //
+        // const list = document.querySelector('.todoList__items').childNodes
+        // const listArray = [ ...list ]
+        // listArray.forEach(todo => {
+        //   if (todo.childNodes[0] !== todoItem.target) {
+        //     todoItem.target.checked = false
+        //   }
+        // })
+
+        // console.log(todoItem.target)
+        // console.log(listArray)
+
         this.setTodoInStorage()
         this.markTodoAsDoneOnServer(completedTodo)
       },
+
       removeTodo(id) {
         this.todosData = this.todosData.filter(todo => todo.id !== id)
         this.setTodoInStorage()
@@ -138,7 +160,6 @@
       setTodoInStorage() {
         localStorage.setItem('todos', JSON.stringify(this.todosData))
       },
-
       addTodoToServer(newTodo) {
         fetch(url, {
           method: 'POST',
@@ -188,14 +209,14 @@
 </script>
 
 <style lang="scss">
-  $accentBlueColor: #457B9D;
-  $accentLightBlueColor: #A8DADC;
-  $textColor: #353535;
+  @import 'scss/colors';
+
 
   body {
     padding: 0;
     margin: 0;
     color: $textColor;
+    font-size: 1.2rem;
 
     hr {
       border: none;
@@ -238,8 +259,16 @@
 
           .header {
             .title {
+              font-size: 3rem;
+              margin-bottom: 0;
+
               .counter {
                 color: $accentBlueColor;
+              }
+
+              @media screen and (max-width: 480px) {
+                display: flex;
+                flex-direction: column;
               }
             }
           }
@@ -249,6 +278,8 @@
             border: none;
             max-width: 125px;
             margin: 20px auto;
+            color: $accentBlueColor;
+            font-weight: bold;
           }
 
           .emptyList {
@@ -256,6 +287,9 @@
           }
 
           @media screen and (max-width: 768px) {
+            font-size: 1rem;
+            display: flex;
+            flex-direction: column;
             margin: 30px 20px;
           }
         }
