@@ -1,7 +1,16 @@
 <template>
-  <form v-on:submit.prevent="newTask">
-    <input class="taskInput" type="text" v-model="title">
-    <button type="submit">ADD</button>
+  <form
+    class="newTaskForm"
+    v-on:submit.prevent="newTask"
+  >
+    <input
+      id="newTask"
+      class="newTaskForm__title"
+      type="text"
+      placeholder="Add a new todo.."
+      v-model="title"
+    >
+    <!--    <button type="submit" class="newTaskForm__addTodoBtn">+</button>-->
   </form>
 </template>
 
@@ -14,12 +23,16 @@
       }
     },
 
+    props: {
+      id: Number
+    },
+
     methods: {
       newTask() {
         if (this.title.trim()) {
 
           const newTask = {
-            id: Date.now(),
+            id: this.id,
             title: this.title,
             completed: false
           }
@@ -33,10 +46,50 @@
 </script>
 
 
-<style scoped>
-  .taskInput {
-    width: 300px;
-    padding: 4px 8px;
-    outline: none;
+<style lang="scss" scoped>
+  @import '../scss/colors';
+
+
+  .newTaskForm {
+
+    &__title {
+      max-width: 400px;
+      width: 100%;
+      padding: 8px 0;
+      margin: 40px 0 0;
+      font-size: 1.4rem;
+      outline: none;
+      border: none;
+      border-bottom: 1px solid $accentLightBlueColor;
+      cursor: pointer;
+      transition: border 0.3s;
+      border-radius: 0;
+
+      &:focus {
+        border-bottom: 2px solid $accentRedColor;
+        transition: border-bottom 0.3s;
+      }
+
+      &::placeholder {
+        color: $accentLightBlueColor;
+      }
+
+      @media screen and (max-width: 768px) {
+        max-width: 360px;
+        width: 85%;
+      }
+    }
+
+    &__addTodoBtn {
+      width: 50px;
+      height: 50px;
+      /*border-radius: 10px;*/
+      border: none;
+      outline: none;
+      color: #f1f1f1;
+      background-color: $accentRedColor;
+      cursor: pointer;
+      transition: 0.3s;
+    }
   }
 </style>
