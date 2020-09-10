@@ -66,13 +66,36 @@
       if (localStorage.todos) {
         this.todosData = JSON.parse(localStorage.todos)
       } else {
-        fetch(`${url}?_limit=3`)
+        fetch(`${url}?_limit=5`)
           .then(response => response.json())
           .then(data => {
-              localStorage.setItem('todos', JSON.stringify(data))
-              return this.todosData = data
+              this.todosData = data
+              this.setTodosInStorage(data)
             }
           )
+          .catch(() => {
+            console.log('Failed to get todos-data from server')
+
+            this.todosData = [
+              {
+                id: 1,
+                title: 'see Dmitry`s projects on GitHub',
+                completed: true
+              },
+              {
+                id: 2,
+                title: 'write Dmitry a message',
+                completed: false
+              },
+              {
+                id: 3,
+                title: '..or call to him',
+                completed: false
+              }
+            ]
+
+            this.setTodosInStorage()
+          })
       }
     },
 
@@ -109,18 +132,17 @@
     methods: {
       addTodo(newTodo) {
         this.todosData.push(newTodo)
-        this.setTodoInStorage()
+        this.setTodosInStorage()
         this.addTodoToServer(newTodo)
       },
       editTodo(todo, newTodoTitle) {
         if (todo.title !== newTodoTitle) {
           todo.title = newTodoTitle
-          this.setTodoInStorage()
+          this.setTodosInStorage()
           this.editTodoFromServer(todo)
         }
       },
-
-      markAsDone(id, todoItem) {
+      markAsDone(id) {
         let completedTodo
         this.todosData.forEach(todo => {
           if (todo.id === id) {
@@ -136,29 +158,17 @@
         //     return a.id > b.id ? 1 : -1;
         //   }
         // })
-        //
-        // const list = document.querySelector('.todoList__items').childNodes
-        // const listArray = [ ...list ]
-        // listArray.forEach(todo => {
-        //   if (todo.childNodes[0] !== todoItem.target) {
-        //     todoItem.target.checked = false
-        //   }
-        // })
 
-        // console.log(todoItem.target)
-        // console.log(listArray)
-
-        this.setTodoInStorage()
+        this.setTodosInStorage()
         this.markTodoAsDoneOnServer(completedTodo)
       },
-
       removeTodo(id) {
         this.todosData = this.todosData.filter(todo => todo.id !== id)
-        this.setTodoInStorage()
+        this.setTodosInStorage()
         this.removeTodoFromServer(id)
       },
-      setTodoInStorage() {
-        localStorage.setItem('todos', JSON.stringify(this.todosData))
+      setTodosInStorage(data = this.todosData) {
+        localStorage.setItem('todos', JSON.stringify(data))
       },
       addTodoToServer(newTodo) {
         fetch(url, {
@@ -168,8 +178,9 @@
             "Content-type": "application/json; charset=UTF-8"
           }
         })
-          .then(response => response.json())
-          .then(json => console.log(json))
+          .then(response => response.ok ?
+            console.log(`Todo #${newTodo.id} added to server`) : console.log(response.statusText))
+          .catch(() => console.log('Something went wrong'))
       },
       markTodoAsDoneOnServer(completedTodo) {
         fetch(`${url}/${completedTodo.id}`, {
@@ -181,8 +192,9 @@
             "Content-type": "application/json; charset=UTF-8"
           }
         })
-          .then(response => response.json())
-          .then(json => console.log(json))
+          .then(response => response.ok ?
+            console.log(`Todo #${completedTodo.id} marked as done on server`) : console.log(response.statusText))
+          .catch(() => console.log('Something went wrong'))
       },
       editTodoFromServer(editedTodo) {
         fetch(`${url}/${editedTodo.id}`, {
@@ -194,15 +206,17 @@
             "Content-type": "application/json; charset=UTF-8"
           }
         })
-          .then(response => response.json())
-          .then(json => console.log(json))
+          .then(response => response.ok ?
+            console.log(`Todo #${editedTodo.id} edited on server`) : console.log(response.statusText))
+          .catch(() => console.log('Something went wrong'))
       },
       removeTodoFromServer(deletedTodoId) {
         fetch(`${url}/${deletedTodoId}`, {
           method: 'DELETE',
         })
           .then(response => response.ok ?
-            console.log('Todo was removed from server') : console.log(response.statusText))
+            console.log(`Todo #${deletedTodoId} was removed from server`) : console.log(response.statusText))
+          .catch(() => console.log('Something went wrong'))
       }
     }
   }
