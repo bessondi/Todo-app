@@ -33,9 +33,8 @@
 
     <button
       class="todo__removeTodoBtn"
-      v-on:click="$emit('removeTask', taskItem.id)"
-    >&times;
-    </button>
+      v-on:click="$emit('removeTask', taskItem.id, $event)"
+    >&times;</button>
   </li>
 </template>
 
@@ -90,7 +89,6 @@
   .todo {
     display: grid;
     grid-template-columns: 30px minmax(50px, 1fr) 30px;
-    /*grid-template-rows: 40px;*/
     grid-template-rows: minmax(40px, auto);
     align-items: center;
     justify-items: center;
@@ -98,31 +96,31 @@
     position: relative;
     padding: 16px;
     margin: 8px 0;
-    border-radius: 10px;
-    background: $todoBodyColor;
+    border-radius: 15px;
     border: 2px solid $accentBlueColor;
     color: $textColor;
-    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 5px rgba(93, 141, 238, .2);
     transition: 0.5s;
 
     &:hover {
-      border: 2px solid $accentDeepBlueColor;
-      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 5px 5px rgba(173, 95, 230, .4);
       transition: 0.5s;
     }
 
     &__checkbox {
       grid-area: checkbox;
-      width: 30px;
-      height: 30px;
-      background-color: $checkboxColor;
+      width: 25px;
+      height: 25px;
       border-radius: 50%;
       margin: 0;
-      border: 2px solid $checkboxChecked;
+      border: 2px solid $checkboxBorder;
       outline: none;
       cursor: pointer;
-      -webkit-appearance: none;
       transition: 0.3s;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+
 
       &:hover {
         background-color: $checkboxHover;
@@ -131,7 +129,7 @@
       }
 
       &:checked {
-        background-color: $accentLightBlueColor;
+        background-color: $accentLightGrayColor;
         border: 2px solid $checkboxHover;
         transition: 0.3s;
 
@@ -183,20 +181,20 @@
       position: absolute;
       width: 30px;
       height: 30px;
-      border-radius: 50%;
+      border-radius: 10px;
+      font-size: 1.3rem;
+      display: inline-block;
       border: none;
       outline: none;
       color: #f1f1f1;
-      background-color: $accentRedColor;
+      background-color: $accentPinkColor;
       cursor: pointer;
       transition: 0.2s;
+      line-height: 5px;
+      box-sizing: border-box;
 
       &:hover {
-        /*width: 62px;*/
-        /*height: 72px;*/
-        /*border-radius: 0 8px 8px 0;*/
-        border-radius: 5px;
-        font-size: 1.5rem;
+        background-color: $accentCrimsonColor;
         transition: 0.2s;
       }
     }
@@ -208,7 +206,8 @@
     }
 
     &.done {
-      border-color: $accentLightBlueColor;
+      border-color: $accentLightGrayColor;
+      background-color: $checkboxChecked;
     }
 
     @media screen and (max-width: 768px) {

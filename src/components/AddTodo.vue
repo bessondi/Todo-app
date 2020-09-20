@@ -10,7 +10,7 @@
       placeholder="Add a new todo.."
       v-model="title"
     >
-    <!--    <button type="submit" class="newTaskForm__addTodoBtn">+</button>-->
+<!--    <button type="submit" class="newTaskForm__addTodoBtn">+</button>-->
   </form>
 </template>
 
@@ -57,21 +57,21 @@
       width: 100%;
       padding: 8px 0;
       margin: 40px 0 0;
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       outline: none;
       border: none;
-      border-bottom: 1px solid $accentLightBlueColor;
+      border-bottom: 1px solid $accentLightGrayColor;
       cursor: pointer;
       transition: border 0.3s;
       border-radius: 0;
 
       &:focus {
-        border-bottom: 2px solid $accentRedColor;
+        border-bottom: 2px solid $accentBlueColor;
         transition: border-bottom 0.3s;
       }
 
       &::placeholder {
-        color: $accentLightBlueColor;
+        color: $accentLightGrayColor;
       }
 
       @media screen and (max-width: 768px) {
@@ -80,16 +80,16 @@
       }
     }
 
-    &__addTodoBtn {
-      width: 50px;
-      height: 50px;
-      /*border-radius: 10px;*/
-      border: none;
-      outline: none;
-      color: #f1f1f1;
-      background-color: $accentRedColor;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+    // &__addTodoBtn {
+      // width: 50px;
+      // height: 50px;
+      // border-radius: 50%;
+      // border: none;
+      // outline: none;
+      // color: #f1f1f1;
+      // background-color: $accentPinkColor;
+      // cursor: pointer;
+      // transition: 0.3s;
+    // }
   }
 </style>

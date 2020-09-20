@@ -1,13 +1,16 @@
 // colors palette
 
-$accentRedColor: #E63946;
-$accentLightBlueColor: #A8DADC;
-$accentBlueColor: #457B9D;
-$accentDeepBlueColor: #1D3557;
+$accentPinkColor: #f99dbd;
+$accentCrimsonColor: #ff402e;
+$accentLightGrayColor: #ccc;
 
-$checkboxColor: #ffffff;
-$todoBodyColor: #ffffff;
+$accentBlueColor: #5d8dee;
+$accentPurpleColor: #ad5fe6;
+$bodyBackgroundColor: linear-gradient(150deg, $accentBlueColor 20%, $accentPurpleColor 90%);
+
+$todoListColor: #fff;
+$checkboxChecked: #eeeeee;
+$checkboxBorder: #cccccc;
+$checkboxHover: #c4c4c4;
 $doneTextColor: #c1c1c1;
-$checkboxHover: #d0d0d0;
-$checkboxChecked: #808080;
-$textColor: #353535;
+$textColor: #515151;

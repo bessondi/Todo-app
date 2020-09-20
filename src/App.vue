@@ -157,7 +157,8 @@
           completed: completedTodo.completed
         })
       },
-      removeTodo(id) {
+      removeTodo(id, event) {
+        console.log(event)
         this.todosData = this.todosData.filter(todo => todo.id !== id)
         this.setTodosInStorage()
         this.modifyTodosOnServer(`${url}/${id}`, 'DELETE', null)
@@ -205,7 +206,7 @@
       border: none;
       height: 3px;
       width: 100%;
-      background-color: $accentLightBlueColor;
+      background-color: $accentLightGrayColor;
       margin: 0;
     }
 
@@ -216,29 +217,25 @@
       text-align: center;
       margin: 0;
       padding: 0;
+      height: 100%;
 
       .container {
         display: flex;
-        align-items: center;
         justify-content: center;
-        width: 100%;
-        height: 100%;
+        background: $bodyBackgroundColor;
+        min-height: 100vh;
 
         .todoList {
           display: flex;
           flex-direction: column;
-          max-width: 600px;
-          min-height: 500px;
+          align-self: start;
+          max-width: 500px;
           width: 100%;
           margin: 60px auto;
-          border-radius: 20px;
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+          background-color: $todoListColor;
+          border-radius: 30px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
           transition: 0.3s;
-
-          &:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: 0.3s;
-          }
 
           .header {
             .title {
@@ -263,10 +260,15 @@
             margin: 20px auto;
             color: $accentBlueColor;
             font-weight: bold;
+            appearance: none;
+            -webkit-appearance: none;
+            background: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0Ljk1IDEwIj48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2ZmZjt9LmNscy0ye2ZpbGw6IzQ0NDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmFycm93czwvdGl0bGU+PHJlY3QgY2xhc3M9ImNscy0xIiB3aWR0aD0iNC45NSIgaGVpZ2h0PSIxMCIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSIxLjQxIDQuNjcgMi40OCAzLjE4IDMuNTQgNC42NyAxLjQxIDQuNjciLz48cG9seWdvbiBjbGFzcz0iY2xzLTIiIHBvaW50cz0iMy41NCA1LjMzIDIuNDggNi44MiAxLjQxIDUuMzMgMy41NCA1LjMzIi8+PC9zdmc+) no-repeat 95% 50%;
+            height: 30px;
+            width: 100%;
           }
 
           .emptyList {
-            color: $accentLightBlueColor;
+            color: $accentLightGrayColor;
           }
 
           @media screen and (max-width: 768px) {

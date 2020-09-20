@@ -27,7 +27,7 @@
         this.$emit('markListTask', id, event)
       },
       removeTask(id) {
-        this.$emit('removeTaskFromList', id)
+        this.$emit('removeTaskFromList', id, event)
       },
       editTodo(item, event) {
         this.$emit('editTaskFromList', item, event)
